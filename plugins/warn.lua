@@ -2,8 +2,8 @@ local function doKeyboard_warn(user_id)
 	local keyboard = {}
     keyboard.inline_keyboard = {
     	{
-    		{text = _("Reset warns"), callback_data = 'resetwarns:'..user_id},
-    		{text = _("Remove warn"), callback_data = 'removewarn:'..user_id}
+    		{text = _("Reset warnings"), callback_data = 'resetwarns:'..user_id},
+    		{text = _("Remove warning"), callback_data = 'removewarn:'..user_id}
     	}
     }
     return keyboard
@@ -16,7 +16,7 @@ local function action(msg, blocks)
     if msg.chat.type == 'private' then return end
     if not roles.is_admin(msg) then
     	if msg.cb then --show a pop up if a normal user tap on an inline button
-    		api.answerCallbackQuery(msg.cb_id, _("You are not an admin"))
+    		api.answerCallbackQuery(msg.cb_id, _("You are not an admin!"))
     	end
     	return
     end
@@ -48,7 +48,7 @@ local function action(msg, blocks)
     	db:hdel('chat:'..msg.chat.id..':warns', user_id)
 		db:hdel('chat:'..msg.chat.id..':mediawarn', user_id)
 		
-		local text = _("Warns *reset*\n(Admin: %s)"):format(misc.getname_final(msg.from))
+		local text = _("Warnings *reset*\n(Admin: %s)"):format(misc.getname_final(msg.from))
 		api.editMessageText(msg.chat.id, msg.message_id, text, false, true)
 		return
 	end
@@ -63,7 +63,7 @@ local function action(msg, blocks)
 		else
 			nmax = (db:hget('chat:'..msg.chat.id..':warnsettings', 'max')) or 3 --get the max num of warnings
 			diff = nmax - num
-			text = _("*Warn removed!* (%d/%d)"):format(tonumber(num), tonumber(nmax))
+			text = _("*Warning removed!* (%d/%d)"):format(tonumber(num), tonumber(nmax))
 		end
 		
 		text = text .. _("\n(Admin: %s)"):format(misc.getname_final(msg.from))
@@ -99,7 +99,7 @@ local function action(msg, blocks)
 		    if not res then
 		    	if not motivation then
 		    		motivation = _("I can't kick this user.\n"
-						.. "Probably I'm not an Amdin, or the user is an Admin iself")
+						.. "Either I'm not an admin or the targeted user is!")
 		    	end
 		    	text = motivation
 		    else
