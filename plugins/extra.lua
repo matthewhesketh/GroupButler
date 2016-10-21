@@ -42,7 +42,7 @@ function plugin.onTextMessage(msg, blocks)
 					api.sendMessage(msg.chat.id, _("That message is too long, I can't send it"))
 				else
 					local text = _("This text breaks the markdown.\n"
-							.. "More info about a proper use of markdown [here]"
+							.. "More info about the proper use of markdown [here]"
 							.. "(https://telegram.me/GroupButler_ch/46).")
 					api.sendMessage(msg.chat.id, text, true)
 				end
